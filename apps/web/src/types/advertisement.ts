@@ -1,11 +1,13 @@
-export interface Advertisement {
-  id: number;
+export interface Post {
+  id: string;
   title: string;
   businessName: string;
-  image: string;
   category: string;
-  location: string;
-  distance: string;
-  offer?: string;
-  featured?: boolean;
+  image: string;
+  description: string;
+  address: string;
+  phone: string;
+  validUntil?: string;
+  tags?: string[];
+  createdAt: string;
 }
