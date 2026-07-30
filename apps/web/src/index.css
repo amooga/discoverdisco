@@ -6,7 +6,7 @@ body,
   width: 100%;
   min-height: 100%;
   margin: 0;
-  padding: 0;s
+  padding: 0;
 }
 
 body {
@@ -20,7 +20,7 @@ body {
     "Segoe UI",
     sans-serif;
 }
-lls
+
 * {
   box-sizing: border-box;
 }
