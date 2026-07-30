@@ -1,17 +1,27 @@
 import { Search } from "lucide-react";
 
-export default function SearchBar() {
-  return (
-    <div className="mx-auto mt-8 max-w-3xl">
-      <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm transition-all duration-300 focus-within:border-orange-500 focus-within:shadow-md">
-        <Search className="h-5 w-5 text-slate-400" />
+interface Props {
+  value: string;
+  onChange: (value: string) => void;
+}
 
-        <input
-          type="text"
-          placeholder="Search businesses, products or advertisements..."
-          className="w-full border-none bg-transparent text-lg text-slate-700 placeholder:text-slate-400 focus:outline-none"
-        />
-      </div>
+export default function SearchBar({
+  value,
+  onChange,
+}: Props) {
+  return (
+    <div className="relative">
+      <Search
+        size={20}
+        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+      />
+
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Search nearby offers..."
+        className="w-full rounded-2xl border border-slate-300 bg-white py-3 pl-12 pr-4 focus:border-orange-500 focus:outline-none"
+      />
     </div>
   );
 }

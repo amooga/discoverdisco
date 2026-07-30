@@ -13,8 +13,11 @@ export interface Post {
   description: string;
   image: string;
   category: string;
-  type: PostType;
   status: PostStatus;
   createdAt: string;
   validUntil?: string;
+  businessName: string;
+  locality: string;
+  distance: number;
+  views: number;
 }
