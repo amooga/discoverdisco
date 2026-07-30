@@ -1,35 +1,18 @@
 import type { Advertisement } from "../types/advertisement";
 
-export const advertisements: Advertisement[] = [
+export const mockAdvertisements: Advertisement[] = [
   {
-    id: 1,
-    title: "Premium School Bags",
-    businessName: "ABC Stationery",
-    image: "/images/bag-sale.jpg",
+    id: "ad-1",
+    businessId: "business-1",
+    title: "20% OFF School Bags",
+    description: "Premium school bags at discounted prices.",
+    image: "",
     category: "Stationery",
-    location: "Dwarka Sector 10",
-    distance: "450 m",
-    offer: "20% OFF",
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "Buy 1 Get 1 Pizza",
-    businessName: "Pizza Hub",
-    image: "/images/pizza-offer.jpg",
-    category: "Food",
-    location: "Dwarka Sector 12",
-    distance: "700 m",
-    offer: "BUY 1 GET 1",
-  },
-  {
-    id: 3,
-    title: "Haircut ₹199",
-    businessName: "Urban Salon",
-    image: "/images/salon-offer.jpg",
-    category: "Salon",
-    location: "Dwarka Sector 6",
-    distance: "1.2 km",
-    offer: "₹199",
+    status: "published",
+    createdAt: new Date().toISOString(),
+    validUntil: "2026-08-15",
+    views: 120,
+    clicks: 18,
+    shares: 4,
   },
 ];

@@ -18,6 +18,7 @@ export interface Post {
   validUntil?: string;
   businessName: string;
   locality: string;
+  phone: string;
+  address: string;
   distance: number;
-  views: number;
 }

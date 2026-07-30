@@ -1,13 +1,19 @@
-export interface Post {
+export type AdvertisementStatus =
+  | "draft"
+  | "published"
+  | "expired";
+
+export interface Advertisement {
   id: string;
+  businessId: string;
   title: string;
-  businessName: string;
-  category: string;
-  image: string;
   description: string;
-  address: string;
-  phone: string;
-  validUntil?: string;
-  tags?: string[];
+  image: string;
+  category: string;
+  status: AdvertisementStatus;
   createdAt: string;
+  validUntil?: string;
+  views: number;
+  clicks: number;
+  shares: number;
 }
