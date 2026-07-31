@@ -1,5 +1,5 @@
-import AdvertisementCard from "./AdvertisementCard";
-import { advertisements } from "../../data/advertisements";
+import AdvertisementCard from "./PostCard";
+import { mockPosts } from "../../data/posts";
 
 export default function AdvertisementGrid() {
   return (
@@ -17,10 +17,10 @@ export default function AdvertisementGrid() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {advertisements.map((advertisement) => (
+        {mockPosts.map((post) => (
           <AdvertisementCard
-            key={advertisement.id}
-            advertisement={advertisement}
+            key={post.id}
+            post={post}
           />
         ))}
       </div>
