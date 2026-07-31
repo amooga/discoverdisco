@@ -9,6 +9,7 @@ export type PostType =
 
 export interface Post {
   id: string;
+  businessId: string;
   title: string;
   description: string;
   image: string;
@@ -16,9 +17,4 @@ export interface Post {
   status: PostStatus;
   createdAt: string;
   validUntil?: string;
-  businessName: string;
-  locality: string;
-  phone: string;
-  address: string;
-  distance: number;
 }

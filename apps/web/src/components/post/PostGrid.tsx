@@ -1,7 +1,7 @@
-import AdvertisementCard from "./PostCard";
-import { mockPosts } from "../../data/posts";
+import PostCard from "./PostCard";
+import type { Post } from "../../types/post";
 
-export default function AdvertisementGrid() {
+export default function PostGrid({ posts }: { posts: Post[] }) {
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
       <div className="mb-8 flex items-end justify-between">
@@ -17,8 +17,8 @@ export default function AdvertisementGrid() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {mockPosts.map((post) => (
-          <AdvertisementCard
+        {posts.map((post) => (
+          <PostCard
             key={post.id}
             post={post}
           />
