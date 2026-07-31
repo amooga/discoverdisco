@@ -1,17 +1,17 @@
 import { Heart, MapPin } from "lucide-react";
-import type { Advertisement } from "../../types/advertisement";
+import type { Post } from "../../types/post";
 
 interface Props {
-  advertisement: Advertisement;
+  post: Post;
 }
 
-export default function AdvertisementCard({ advertisement }: Props) {
+export default function PostCard({ post }: Props) {
   return (
     <article className="group overflow-hidden rounded-3xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <div className="relative h-80 overflow-hidden">
         <img
-          src={advertisement.image}
-          alt={advertisement.title}
+          src={post.image}
+          alt={post.title}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
 
@@ -19,9 +19,9 @@ export default function AdvertisementCard({ advertisement }: Props) {
           <Heart className="h-5 w-5 text-slate-700" />
         </button>
 
-        {advertisement.offer && (
+        {post.status && (
           <span className="absolute bottom-4 left-4 rounded-full bg-orange-500 px-4 py-2 text-sm font-bold text-white">
-            {advertisement.offer}
+            {post.status}
           </span>
         )}
       </div>
@@ -29,28 +29,28 @@ export default function AdvertisementCard({ advertisement }: Props) {
       <div className="space-y-3 p-5">
         <div className="flex items-center justify-between">
           <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
-            {advertisement.category}
+            {post.category}
           </span>
 
-          {advertisement.featured && (
+          {/* {post.featured && (
             <span className="text-xs font-semibold text-orange-600">
               Featured
             </span>
-          )}
+          )} */}
         </div>
 
         <h3 className="text-xl font-bold text-slate-900">
-          {advertisement.title}
+          {post.title}
         </h3>
 
         <p className="font-medium text-slate-600">
-          {advertisement.businessName}
+          {post.businessName}
         </p>
 
         <div className="flex items-center gap-2 text-sm text-slate-500">
           <MapPin className="h-4 w-4" />
           <span>
-            {advertisement.location} • {advertisement.distance}
+            {post.locality} • {post.distance}
           </span>
         </div>
       </div>

@@ -9,6 +9,11 @@ export interface Business {
     locality: string;
     city: string;
     logo?: string;
+    coverImage?: string;
     verified: boolean;
+    description?: string;
+    website?: string;
+    openingTime?: string;
+    closingTime?: string;
     createdAt: string;
 }

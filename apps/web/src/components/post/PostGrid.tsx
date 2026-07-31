@@ -1,7 +1,7 @@
-import AdvertisementCard from "./AdvertisementCard";
-import { advertisements } from "../../data/advertisements";
+import PostCard from "./PostCard";
+import type { Post } from "../../types/post";
 
-export default function AdvertisementGrid() {
+export default function PostGrid({ posts }: { posts: Post[] }) {
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
       <div className="mb-8 flex items-end justify-between">
@@ -17,10 +17,10 @@ export default function AdvertisementGrid() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {advertisements.map((advertisement) => (
-          <AdvertisementCard
-            key={advertisement.id}
-            advertisement={advertisement}
+        {posts.map((post) => (
+          <PostCard
+            key={post.id}
+            post={post}
           />
         ))}
       </div>

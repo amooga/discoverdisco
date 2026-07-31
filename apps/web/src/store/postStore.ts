@@ -1,17 +1,26 @@
 import { create } from "zustand";
-import { mockPosts } from "../data/posts";
+import PostService from "../services/postService";
 import type { Post } from "../types/post";
 
 interface PostStore {
   posts: Post[];
-  addPost: (post: Post) => void;
+
+  addPost: (
+    Post: Post
+  ) => void;
 }
 
-export const usePostStore = create<PostStore>((set) => ({
-  posts: mockPosts,
-
-  addPost: (post) =>
-    set((state) => ({
-      posts: [post, ...state.posts],
-    })),
-}));
+export const usePostStore =
+  create<PostStore>((set) => ({
+    posts: PostService.getAll(),
+    
+    addPost: (Post) => {
+        PostService.create(Post);
+        set(state => ({
+            posts: [
+            Post,
+            ...state.posts,
+            ],
+        }));
+    }
+  }));

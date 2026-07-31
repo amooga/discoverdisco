@@ -5,7 +5,6 @@ import AdvertisementDetailsPage from "../pages/AdvertisementDetailsPage";
 import CreateAdvertisementPage from "../pages/CreateAdvertisementPage";
 import DashboardPage from "../pages/DashboardPage";
 import NotFoundPage from "../pages/NotFoundPage";
-import CreatePostPage from "../pages/CreatePostPage";
 
 export default function AppRouter() {
   return (
@@ -21,10 +20,6 @@ export default function AppRouter() {
           element={<CreateAdvertisementPage />}
         />
         <Route path="/dashboard" element={<DashboardPage />} />
-         <Route
-          path="/create-post"
-          element={<CreatePostPage />}
-        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

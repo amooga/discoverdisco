@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import HomeHeader from "../components/home/HomeHeader";
 import SearchBar from "../components/home/SearchBar";
 import CategoryChips from "../components/home/CategoryChips";
-import AdvertisementGrid from "../components/home/AdvertisementGrid";
+import PostGrid from "../components/post/PostGrid";
 import { usePostStore } from "../store/postStore";
 
 export default function HomePage() {
@@ -43,7 +43,7 @@ export default function HomePage() {
           onSelect={setCategory}
         />
 
-        <AdvertisementGrid posts={filteredPosts} />
+        <PostGrid posts={filteredPosts} />
       </div>
     </main>
   );

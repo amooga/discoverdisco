@@ -1,0 +1,15 @@
+export const BUSINESS_CATEGORIES = [
+  "Stationery",
+  "Restaurant",
+  "Cafe",
+  "Bakery",
+  "Salon",
+  "Medical",
+  "Grocery",
+  "Electronics",
+  "Clothing",
+  "Pet Shop",
+  "Fitness",
+  "Education",
+  "Home Services",
+];
