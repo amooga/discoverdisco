@@ -37,4 +37,16 @@ class PostService {
   }
 }
 
+const API_URL = "http://localhost:5000/api";
+
+export async function getPosts() {
+  const response = await fetch(`${API_URL}/posts`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch posts");
+  }
+
+  return response.json();
+}
+
 export default new PostService();

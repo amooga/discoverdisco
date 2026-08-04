@@ -7,13 +7,21 @@ export type PostType =
   | "event"
   | "announcement";
 
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  icon?: string;
+  color?: string;
+}
+
 export interface Post {
   id: string;
   businessId: string;
   title: string;
   description: string;
   image: string;
-  category: string;
+  categoryId: string;
   status: PostStatus;
   createdAt: string;
   validUntil?: string;

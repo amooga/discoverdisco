@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Business {
+  id            String   @id @default(cuid())
+
+  name          String
+  ownerName     String
+
+  email         String   @unique
+  phone         String   @unique
+
+  passwordHash  String
+
+  address       String
+  locality      String
+  city          String
+  state         String
+  pincode       String
+
+  verified      Boolean  @default(false)
+
+  logoUrl       String?
+  coverImage    String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  posts         Post[]
+}
+
+model Post {
+  id            String   @id @default(cuid())
+
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id])
+
+  title         String
+  description   String
+
+  imageUrl      String?
+
+  category      String
+
+  status        String   @default("ACTIVE")
+
+  views         Int @default(0)
+  clicks        Int @default(0)
+  shares        Int @default(0)
+
+  validUntil    DateTime?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
