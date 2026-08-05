@@ -1,16 +1,28 @@
 import businessRepository from "../repositories/business.repository";
 
-import { RegisterInput } from "../validators/auth.validator";
+import {
+  RegisterInput,
+  LoginInput,
+} from "../validators/auth.validator";
 
-import { hashPassword } from "../utils/password";
+import {
+  hashPassword,
+  comparePassword,
+} from "../utils/password";
+
 import { generateToken } from "../utils/jwt";
 
-export class AuthService {
+import AppError from "../utils/AppError";
+
+class AuthService {
   async register(data: RegisterInput) {
     const existing = await businessRepository.findByEmail(data.email);
 
     if (existing) {
-      throw new Error("Email already registered.");
+      throw new AppError(
+        "Email already registered.",
+        409
+      );
     }
 
     const passwordHash = await hashPassword(data.password);
@@ -20,14 +32,52 @@ export class AuthService {
       passwordHash
     );
 
+    const { passwordHash: _, ...safeBusiness } = business;
+
+
     const token = generateToken({
-      businessId: business.id,
-      email: business.email,
+      sub: business.id
     });
 
     return {
       token,
-      business,
+      business: safeBusiness,
+    };
+  }
+
+  async login(data: LoginInput) {
+    const business = await businessRepository.findByEmailWithPassword(
+      data.email
+    );
+
+    if (!business) {
+      throw new AppError(
+        "Invalid email or password.",
+        401
+      );
+    }
+
+    const isValid = await comparePassword(
+      data.password,
+      business.passwordHash
+    );
+
+    if (!isValid) {
+      throw new AppError(
+        "Invalid email or password.",
+        401
+      );
+    }
+
+    const { passwordHash: _, ...safeBusiness } = business;
+
+    const token = generateToken({
+      sub: business.id
+    });
+
+    return {
+      token,
+      business: safeBusiness,
     };
   }
 }

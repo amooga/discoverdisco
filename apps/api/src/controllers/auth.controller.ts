@@ -1,62 +1,57 @@
-import businessRepository from "../repositories/business.repository";
+import { Request, Response, NextFunction } from "express";
 
-import { RegisterInput, LoginInput } from "../validators/auth.validator";
+import authService from "../services/auth.service";
+import { successResponse } from "../utils/response";
+import {
+  registerSchema,
+  loginSchema,
+} from "../validators/auth.validator";
 
-import { comparePassword, hashPassword } from "../utils/password";
-import { generateToken } from "../utils/jwt";
+class AuthController {
+  async register(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const data = registerSchema.parse(req.body);
 
-export class AuthService {
-  async register(data: RegisterInput) {
-    const existing = await businessRepository.findByEmail(data.email);
+      const result = await authService.register(data);
 
-    if (existing) {
-      throw new Error("Email already registered.");
+      successResponse(
+        res,
+        result,
+        "Business registered successfully.",
+        201
+      );
+
+      return ;
+    } catch (error) {
+      next(error);
     }
-
-    const passwordHash = await hashPassword(data.password);
-
-    const business = await businessRepository.create(
-      data,
-      passwordHash
-    );
-
-    const token = generateToken({
-      businessId: business.id,
-      email: business.email,
-    });
-
-    return {
-      token,
-      business,
-    };
   }
 
-  async login(data: LoginInput) {
-    const business = await businessRepository.findByEmail(data.email);
+  async login(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const data = loginSchema.parse(req.body);
 
-    if (!business) {
-        throw new Error("Invalid email or password.");
+      const result = await authService.login(data);
+
+      successResponse(
+        res,
+        result,
+        "Login successful."
+      );
+
+      return;
+    } catch (error) {
+      next(error);
     }
-
-    const isValid = await comparePassword(
-        data.password,
-        business.passwordHash
-    );
-
-    if (!isValid) {
-        throw new Error("Invalid email or password.");
-    }
-
-    const token = generateToken({
-        businessId: business.id,
-        email: business.email,
-    });
-
-    return {
-        token,
-        business,
-    };
-    }
+  }
 }
 
-export default new AuthService();
+export default new AuthController();

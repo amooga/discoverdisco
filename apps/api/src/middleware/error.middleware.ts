@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from "express";
+import AppError from "../utils/AppError";
 import { ZodError } from "zod";
+import { Request, Response, NextFunction } from "express";
 
 export function errorMiddleware(
   error: unknown,
@@ -15,12 +16,14 @@ export function errorMiddleware(
     });
   }
 
-  if (error instanceof Error) {
-    return res.status(400).json({
+  if (error instanceof AppError) {
+    return res.status(error.statusCode).json({
       success: false,
       message: error.message,
     });
   }
+
+  console.error(error);
 
   return res.status(500).json({
     success: false,

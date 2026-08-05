@@ -35,6 +35,13 @@ model Business {
   posts         Post[]
 }
 
+model Category {
+  id    String @id @default(cuid())
+  name  String @unique
+
+  posts Post[]
+}
+
 model Post {
   id            String   @id @default(cuid())
 
@@ -46,7 +53,9 @@ model Post {
 
   imageUrl      String?
 
-  category      String
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id])
+
 
   status        String   @default("ACTIVE")
 
