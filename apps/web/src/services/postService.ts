@@ -1,9 +1,15 @@
-import { mockPosts } from "../data/posts";
 import type { Post } from "../types/post";
+const API_URL = "http://localhost:5000/api";
 
 class PostService {
-  private Posts = [...mockPosts];
 
+  private Posts: Post[] = [];
+
+  constructor() {
+    getPosts().then((data) => {      
+      this.Posts = data;
+    });
+  }
   getAll(): Post[] {
     return this.Posts;
   }
@@ -35,18 +41,24 @@ class PostService {
       ad => ad.id !== id
     );
   }
+
 }
 
-const API_URL = "http://localhost:5000/api";
 
-export async function getPosts() {
+export async function getPosts(): Promise<Post[]> {
   const response = await fetch(`${API_URL}/posts`);
-
   if (!response.ok) {
     throw new Error("Failed to fetch posts");
   }
-
   return response.json();
-}
+}   
+
+export async function createPost() {}
+
+export async function updatePost() {}
+
+export async function deletePost() {}
+
+export async function getMyPosts() {}
 
 export default new PostService();

@@ -58,7 +58,7 @@ class PostController {
   }
 
   async getById(
-    req: Request,
+    req: Request<{id: string}>,
     res: Response,
     next: NextFunction
   ): Promise<void> {
@@ -81,6 +81,90 @@ class PostController {
       next(error);
     }
   }
+
+  async update(
+    req: Request<{ id: string }>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      if (!req.businessId) {
+        throw new AppError("Unauthorized", 401);
+      }
+
+      const data = createPostSchema.parse(req.body);
+
+      const post = await postService.update(
+        req.businessId,
+        req.params.id,
+        data
+      );
+
+      successResponse(
+        res,
+        post,
+        "Advertisement updated successfully."
+      );
+
+      return;
+    } catch (error) {
+      next(error);
+    }
+
+    }   
+
+    async delete(
+        req: Request<{ id: string }>,
+        res: Response,
+        next: NextFunction
+    ) {
+      try {
+        if (!req.businessId) {
+          throw new AppError("Unauthorized", 401);
+        }
+
+        await postService.delete(
+          req.businessId,
+          req.params.id
+        );
+
+        successResponse(
+          res,
+          null,
+          "Advertisement deleted successfully."
+        );
+
+        return;
+      } catch (error) {
+        next(error);
+      }     
+    }
+
+    async getMyPosts(
+        req: AuthRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
+        try {
+            if (!req.businessId) {
+                throw new AppError("Unauthorized", 401);
+            }
+
+            const posts = await postService.getMyPosts(
+                req.businessId
+            );
+
+            successResponse(
+                res,
+                posts,
+                "Advertisements fetched successfully."
+            );
+
+            return;
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new PostController();

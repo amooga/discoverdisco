@@ -36,10 +36,17 @@ model Business {
 }
 
 model Category {
-  id    String @id @default(cuid())
-  name  String @unique
+  id        String   @id @default(cuid())
 
-  posts Post[]
+  name      String   @unique
+  slug      String   @unique
+
+  icon      String?
+  color     String?
+
+  createdAt DateTime @default(now())
+
+  posts     Post[]
 }
 
 model Post {

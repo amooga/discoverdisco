@@ -71,6 +71,22 @@ export class BusinessRepository {
         },
     });
   }
+
+	async getDashboardStats(businessId: string) {
+		const posts = await prisma.post.findMany({
+			where: {
+				businessId,
+			},
+		});
+
+		return {
+			totalPosts: posts.length,
+			totalViews: posts.reduce((sum, p) => sum + p.views, 0),
+			totalClicks: posts.reduce((sum, p) => sum + p.clicks, 0),
+			totalShares: posts.reduce((sum, p) => sum + p.shares, 0),
+		};
+	}
+
 }
 
 export default new BusinessRepository();

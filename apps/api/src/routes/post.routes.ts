@@ -12,14 +12,29 @@ router.get(
 );
 
 router.get(
-  "/:id",
-  postController.getById
+  "/me",
+  authenticate,
+  postController.getMyPosts
 );
+
+router.get("/:id", postController.getById);
 
 router.post(
   "/",
   authenticate,
   postController.create
+);
+
+router.patch(
+  "/:id",
+  authenticate,
+  postController.update
+);
+
+router.delete(
+  "/:id",
+  authenticate,
+  postController.delete
 );
 
 export default router;

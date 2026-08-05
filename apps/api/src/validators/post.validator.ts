@@ -13,10 +13,7 @@ export const createPostSchema = z.object({
     .min(20)
     .max(1000),
 
-  category: z
-    .string()
-    .trim()
-    .min(2),
+  categoryId: z.string().cuid(),
 
   imageUrl: z
     .string()

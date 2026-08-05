@@ -18,7 +18,7 @@ export default function HomePage() {
         post.description.toLowerCase().includes(search.toLowerCase());
 
       const matchesCategory =
-        category === "All" || post.category === category;
+        category === "All" || post.categoryId === category;
 
       return (
         post.status === "published" &&

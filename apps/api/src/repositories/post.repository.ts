@@ -12,7 +12,7 @@ class PostRepository {
         businessId,
         title: data.title,
         description: data.description,
-        category: data.category,
+        categoryId: data.categoryId,
         imageUrl: data.imageUrl,
         validUntil: data.validUntil
           ? new Date(data.validUntil)
@@ -58,6 +58,88 @@ class PostRepository {
       },
     });
   }
+
+	async findByBusinessAndId(
+		businessId: string,
+		postId: string
+	) {
+		return prisma.post.findFirst({
+			where: {
+				id: postId,
+				businessId,
+			},
+		});
+	}
+
+  async update(
+    id: string,
+    data: Partial<CreatePostInput>
+	) {
+    return prisma.post.update({
+        where: {
+        id,
+        },
+        data: {
+        title: data.title,
+        description: data.description,
+        imageUrl: data.imageUrl,
+        validUntil: data.validUntil
+            ? new Date(data.validUntil)
+            : undefined,
+
+        ...(data.categoryId && {
+            category: {
+            connect: {
+                id: data.categoryId,
+            },
+            },
+        }),
+        },
+        include: {
+        business: true,
+        category: true,
+        },
+    });
+  } 
+
+	async delete(id: string) {
+		return prisma.post.delete({
+			where: {
+				id,
+			},
+		});
+	}
+
+	async findByBusiness(
+		businessId: string
+	) {
+		return prisma.post.findMany({
+			where: {
+				businessId,
+			},
+			include: {
+				category: true,
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+		});
+	}
+
+	async findByBusinessId(businessId: string) {
+		return prisma.post.findMany({
+			where: {
+				businessId,
+			},
+			include: {
+				category: true,
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+		});
+	}
+
 }
 
 export default new PostRepository();
