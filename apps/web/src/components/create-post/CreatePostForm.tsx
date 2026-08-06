@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import { usePostStore } from "../../store/postStore";
 import ImageUploader from "./ImageUploader";
 import CategorySelect from "./CategorySelect";
@@ -23,7 +23,7 @@ export default function CreatePostForm() {
 
     const { title, description, categoryId, imageUrl: image, type, validUntil, categoryName } = form;
 
-  function publish() {
+  async function publish() {
     if (!title || !description) {
       alert("Please fill all required fields.");
       return;
@@ -33,20 +33,23 @@ export default function CreatePostForm() {
         alert("Please select a category.");
         return;
     }
+    try {
+        await addPost({
+        title,
+        description,
+        imageUrl: image || undefined,
+        categoryId,
+        validUntil: validUntil ? new Date(validUntil).toISOString()
+                        : undefined,
+        });
 
-    addPost({
-      id: Date.now().toString(),
-      title,
-      description,
-      image,
-      categoryId,
-      type: type as any,
-      status: "published",
-      createdAt: new Date().toISOString(),
-      validUntil,
-    });
-
-    navigate("/dashboard");
+        navigate("/dashboard");
+    } catch (error) {
+        alert(
+            error?.response?.data?.message ??
+            "Failed to publish advertisement."
+        );
+    }
   }        
 
 return (
@@ -146,9 +149,7 @@ return (
 
             </div>
 
-            <PublishButton
-            onPublish={publish}
-            />
+            <PublishButton onPublish={publish} />
 
         </div>
 

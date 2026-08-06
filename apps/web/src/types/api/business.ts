@@ -17,3 +17,11 @@ export interface Business {
     closingTime?: string;
     createdAt: string;
 }
+
+export interface BusinessResponse {
+    id: string;
+    name: string;
+    locality: string;
+    city: string;
+    logoUrl?: string;
+}

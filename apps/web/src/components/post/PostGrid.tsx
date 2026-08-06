@@ -1,5 +1,5 @@
 import PostCard from "./PostCard";
-import type { Post } from "../../types/post";
+import type { Post } from "../../types/api/post";
 
 export default function PostGrid({ posts }: { posts: Post[] }) {
   return (

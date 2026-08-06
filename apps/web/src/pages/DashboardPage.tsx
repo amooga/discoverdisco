@@ -1,20 +1,36 @@
+import { useEffect } from "react";
 import DashboardHeader from "../components/dashboard/DashboardHeader";
 import StatsSection from "../components/dashboard/StatsSection";
 import { usePostStore } from "../store/postStore";
+import MyAdvertisements from "../components/dashboard/MyAdvertisements";
 
 export default function DashboardPage() {
   const posts = usePostStore((state) => state.posts);
+  const loading = usePostStore((state) => state.loading);
+  const loadPosts = usePostStore((state) => state.loadPosts);
+
+  useEffect(() => {
+    loadPosts().catch(console.error);
+  }, [loadPosts]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        Loading...
+      </main>
+    );
+  }
 
   const published = posts.filter(
-    (post) => post.status === "published"
+    (post) => post.status === "ACTIVE"
   ).length;
 
   const draft = posts.filter(
-    (post) => post.status === "draft"
+    (post) => post.status === "DRAFT"
   ).length;
 
   const expired = posts.filter(
-    (post) => post.status === "expired"
+    (post) => post.status === "EXPIRED"
   ).length;
 
   return (
@@ -30,6 +46,8 @@ export default function DashboardPage() {
           draft={draft}
           expired={expired}
         />
+
+        <MyAdvertisements posts={posts} />
       </div>
     </main>
   );

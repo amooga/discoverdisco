@@ -1,37 +1,38 @@
 import api from "./api";
+import type {
+  CreatePostInput,
+  Post,
+} from "../types/api/post";
 
-export async function getPosts() {
-  const response = await api.get("/posts");
+class PostService {
+  async create(data: CreatePostInput) {
+    const response = await api.post(
+      "/posts",
+      data
+    );
 
-  return response.data.data;
+    return response.data.data as Post;
+  }
+
+  async getMine() {
+    const response = await api.get(
+      "/posts/me"
+    );
+
+    return response.data.data as Post[];
+  }
+
+  async getAll() {
+    const response = await api.get(
+      "/posts"
+    );
+
+    return response.data.data as Post[];
+  }
+
+  async delete(id: string) {
+    await api.delete(`/posts/${id}`);
+  }
 }
 
-export async function getMyPosts() {
-  const response = await api.get("/posts/me");
-
-  return response.data.data;
-}
-
-export async function getPost(id: string) {
-  const response = await api.get(`/posts/${id}`);
-
-  return response.data.data;
-}
-
-export async function createPost(data: any) {
-  const response = await api.post("/posts", data);
-
-  return response.data.data;
-}
-
-export async function updatePost(id: string, data: any) {
-  const response = await api.patch(`/posts/${id}`, data);
-
-  return response.data.data;
-}
-
-export async function deletePost(id: string) {
-  const response = await api.delete(`/posts/${id}`);
-
-  return response.data.data;
-}
+export default new PostService();

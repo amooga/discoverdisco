@@ -1,5 +1,5 @@
 import { Heart, MapPin } from "lucide-react";
-import type { Post } from "../../types/post";
+import type { Post } from "../../types/api/post";
 
 interface Props {
   post: Post;

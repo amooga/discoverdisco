@@ -33,7 +33,7 @@ export default function DashboardHeader({
       </div>
 
       <button
-        onClick={() => navigate("/create-post")}
+        onClick={() => navigate("/advertise")}
         className="inline-flex items-center justify-center gap-2 rounded-2xl bg-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-orange-600"
       >
         <Plus size={20} />
