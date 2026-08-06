@@ -17,13 +17,18 @@ router.get(
   postController.getMyPosts
 );
 
-router.get("/:id", postController.getById);
+router.get(
+  "/feed",
+  postController.feed
+);
 
 router.post(
   "/",
   authenticate,
   postController.create
 );
+
+router.get("/:id", postController.getById);
 
 router.patch(
   "/:id",
@@ -35,11 +40,6 @@ router.delete(
   "/:id",
   authenticate,
   postController.delete
-);
-
-router.get(
-  "/feed",
-  postController.feed
 );
 
 export default router;

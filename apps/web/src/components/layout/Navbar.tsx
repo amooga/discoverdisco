@@ -1,117 +1,83 @@
-import { Search, Bell, Menu } from "lucide-react";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const token = localStorage.getItem("token");
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
 
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white font-bold">
-            D
-          </div>
+        <Link
+          to="/"
+          className="text-2xl font-bold text-orange-600"
+        >
+          DiscoverDisco
+        </Link>
 
-          <div>
-            <h1 className="text-lg font-bold text-gray-900">
-              DiscoverDisco
-            </h1>
+        <nav className="hidden gap-8 text-sm font-medium text-slate-600 md:flex">
 
-            <p className="text-xs text-gray-500">
-              Discover Nearby
-            </p>
-          </div>
-        </div>
-
-        {/* Desktop Navigation */}
-
-        <nav className="hidden items-center gap-8 md:flex">
-
-          <a
-            href="#"
-            className="font-medium text-gray-600 transition hover:text-blue-600"
+          <Link
+            to="/"
+            className="hover:text-orange-600"
           >
-            Browse
-          </a>
+            Home
+          </Link>
 
-          <a
-            href="#"
-            className="font-medium text-gray-600 transition hover:text-blue-600"
+          <Link
+            to="/categories"
+            className="hover:text-orange-600"
           >
             Categories
-          </a>
+          </Link>
 
-          <a
-            href="#"
-            className="font-medium text-gray-600 transition hover:text-blue-600"
+          <Link
+            to="/nearby"
+            className="hover:text-orange-600"
           >
-            Businesses
-          </a>
+            Nearby
+          </Link>
 
         </nav>
 
-        {/* Right Side */}
+        <div className="flex items-center gap-3">
 
-        <div className="hidden items-center gap-3 md:flex">
+          {token ? (
+            <>
+              <Link
+                to="/create-post"
+                className="rounded-xl bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
+              >
+                + Post
+              </Link>
 
-          <button className="rounded-xl p-2 hover:bg-gray-100">
-            <Search size={20} />
-          </button>
+              <Link
+                to="/dashboard"
+                className="rounded-xl border border-slate-300 px-4 py-2 hover:bg-slate-50"
+              >
+                Dashboard
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="rounded-xl border border-slate-300 px-4 py-2 hover:bg-slate-50"
+              >
+                Login
+              </Link>
 
-          <button className="rounded-xl p-2 hover:bg-gray-100">
-            <Bell size={20} />
-          </button>
-
-          <button className="rounded-2xl bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-700">
-            Advertise
-          </button>
+              <Link
+                to="/register"
+                className="rounded-xl bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
+              >
+                Register
+              </Link>
+            </>
+          )}
 
         </div>
 
-        {/* Mobile */}
-
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden"
-        >
-          <Menu />
-        </button>
       </div>
-
-      {mobileMenuOpen && (
-        <div className="border-t bg-white md:hidden">
-
-          <a
-            href="#"
-            className="block px-6 py-4 hover:bg-gray-50"
-          >
-            Browse
-          </a>
-
-          <a
-            href="#"
-            className="block px-6 py-4 hover:bg-gray-50"
-          >
-            Categories
-          </a>
-
-          <a
-            href="#"
-            className="block px-6 py-4 hover:bg-gray-50"
-          >
-            Businesses
-          </a>
-
-          <div className="p-6">
-            <button className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white">
-              Advertise
-            </button>
-          </div>
-
-        </div>
-      )}
     </header>
   );
 }
