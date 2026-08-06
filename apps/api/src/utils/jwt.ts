@@ -1,0 +1,17 @@
+import jwt from "jsonwebtoken";
+
+import { env } from "../config/env";
+
+export interface JwtPayload {
+    sub: string;
+}
+
+export function generateToken(payload: JwtPayload) {
+  return jwt.sign(payload, env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+}
+
+export function verifyToken(token: string) {
+  return jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+}

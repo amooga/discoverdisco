@@ -11,17 +11,17 @@ export default function CreatePostForm() {
   const navigate = useNavigate();
   const addPost = usePostStore((state) => state.addPost);
 
-  const [image, setImage] = useState("");
+    const [form, setForm] = useState({
+        title: "",
+        description: "",
+        categoryId: "",
+        imageUrl: "",
+        type: "offer",
+        validUntil: "",
+        categoryName: "",
+    });
 
-  const [title, setTitle] = useState("");
-
-  const [category, setCategory] = useState("Stationery");
-
-  const [type, setType] = useState("offer");
-
-  const [description, setDescription] = useState("");
-
-  const [validUntil, setValidUntil] = useState("");
+    const { title, description, categoryId, imageUrl: image, type, validUntil, categoryName } = form;
 
   function publish() {
     if (!title || !description) {
@@ -29,12 +29,17 @@ export default function CreatePostForm() {
       return;
     }
 
+    if (!categoryId) {
+        alert("Please select a category.");
+        return;
+    }
+
     addPost({
       id: Date.now().toString(),
       title,
       description,
       image,
-      category,
+      categoryId,
       type: type as any,
       status: "published",
       createdAt: new Date().toISOString(),
@@ -42,7 +47,7 @@ export default function CreatePostForm() {
     });
 
     navigate("/dashboard");
-  }
+  }        
 
 return (
     <div className="grid gap-8 lg:grid-cols-5">
@@ -63,7 +68,10 @@ return (
 
             <ImageUploader
             image={image}
-            onChange={setImage}
+            onChange={(value) => setForm((prev) => ({              
+                                        ...prev,
+                                        imageUrl: value,                        
+                                    }))}
             />
 
             <div>
@@ -74,7 +82,10 @@ return (
 
             <input
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setForm((prev) => ({              
+                                            ...prev,
+                                            title: e.target.value,                        
+                                        }))}
                 placeholder="20% OFF School Bags"
                 className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-orange-500"
             />
@@ -82,13 +93,20 @@ return (
             </div>
 
             <CategorySelect
-            value={category}
-            onChange={setCategory}
+                value={categoryId}
+                onChange={(value: string, name: string) => setForm((prev) => ({              
+                                            ...prev,
+                                            categoryId: value,   
+                                            categoryName: name,                     
+                                        }))}
             />
 
             <TypeSelect
             value={type}
-            onChange={setType}
+            onChange={(value) => setForm((prev) => ({              
+                                        ...prev,
+                                        type: value,                        
+                                    }))}
             />
 
             <div>
@@ -100,7 +118,10 @@ return (
             <textarea
                 rows={6}
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => setForm((prev) => ({              
+                                            ...prev,
+                                            description: e.target.value,                        
+                                        }))}
                 placeholder="Tell customers about your offer..."
                 className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-orange-500"
             />
@@ -116,7 +137,10 @@ return (
             <input
                 type="date"
                 value={validUntil}
-                onChange={(e) => setValidUntil(e.target.value)}
+                onChange={(e) => setForm((prev) => ({              
+                                            ...prev,
+                                            validUntil: e.target.value,                        
+                                        }))}
                 className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-orange-500"
             />
 
@@ -139,7 +163,7 @@ return (
             <PostPreview
             title={title}
             image={image}
-            category={category}
+            category={categoryName}
             description={description}
             />
 
