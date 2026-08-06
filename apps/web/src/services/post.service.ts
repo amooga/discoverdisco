@@ -1,7 +1,7 @@
 import api from "./api";
 import type {
   CreatePostInput,
-  Post,
+  PostResponse,
 } from "../types/api/post";
 
 class PostService {
@@ -11,7 +11,7 @@ class PostService {
       data
     );
 
-    return response.data.data as Post;
+    return response.data.data as PostResponse;
   }
 
   async getMine() {
@@ -19,7 +19,7 @@ class PostService {
       "/posts/me"
     );
 
-    return response.data.data as Post[];
+    return response.data.data as PostResponse[];
   }
 
   async getAll() {
@@ -27,11 +27,17 @@ class PostService {
       "/posts"
     );
 
-    return response.data.data as Post[];
+    return response.data.data as PostResponse[];
   }
 
   async delete(id: string) {
     await api.delete(`/posts/${id}`);
+  }
+
+  async getFeed() {
+    const response = await api.get("/posts/feed");
+
+    return response.data.data as PostResponse[];
   }
 }
 

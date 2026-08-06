@@ -37,4 +37,9 @@ router.delete(
   postController.delete
 );
 
+router.get(
+  "/feed",
+  postController.feed
+);
+
 export default router;

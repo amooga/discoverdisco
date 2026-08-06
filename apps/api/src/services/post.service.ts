@@ -70,6 +70,10 @@ class PostService {
 		);
 	}
 
+  async getFeed() {
+    return postRepository.findAllActive();
+  }
+
 }
 
 export default new PostService();

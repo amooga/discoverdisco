@@ -1,50 +1,39 @@
-import { useMemo, useState } from "react";
-import HomeHeader from "../components/home/HomeHeader";
-import SearchBar from "../components/home/SearchBar";
-import CategoryChips from "../components/home/CategoryChips";
-import PostGrid from "../components/post/PostGrid";
+import { useEffect } from "react";
+import FeedGrid from "../components/feed/FeedGrid";
 import { usePostStore } from "../store/postStore";
 
 export default function HomePage() {
-  const posts = usePostStore((state) => state.posts);
+  const {
+    feed,
+    loadFeed,
+  } = usePostStore();
 
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
-
-  const filteredPosts = useMemo(() => {
-    return posts.filter((post) => {
-      const matchesSearch =
-        post.title.toLowerCase().includes(search.toLowerCase()) ||
-        post.description.toLowerCase().includes(search.toLowerCase());
-
-      const matchesCategory =
-        category === "All" || post.categoryId === category;
-
-      return (
-        post.status === "published" &&
-        matchesSearch &&
-        matchesCategory
-      );
-    });
-  }, [posts, search, category]);
+  useEffect(() => {
+    loadFeed();
+  }, [loadFeed]);
 
   return (
     <main className="min-h-screen bg-slate-50">
-      <HomeHeader />
 
-      <div className="mx-auto max-w-7xl space-y-8 px-6 py-8">
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-        />
+      <section className="border-b bg-white">
 
-        <CategoryChips
-          selected={category}
-          onSelect={setCategory}
-        />
+        <div className="mx-auto max-w-7xl px-6 py-14">
 
-        <PostGrid posts={filteredPosts} />
-      </div>
+          <h1 className="text-5xl font-bold">
+            Discover Amazing Offers Nearby
+          </h1>
+
+          <p className="mt-4 max-w-xl text-lg text-slate-500">
+            Find discounts, deals and services from
+            businesses around you.
+          </p>
+
+        </div>
+
+      </section>
+
+      <FeedGrid posts={feed} />
+
     </main>
   );
 }

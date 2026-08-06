@@ -40,6 +40,21 @@ class PostRepository {
     });
   }
 
+  async findAllActive() {
+    return prisma.post.findMany({
+      where: {
+        status: "ACTIVE",
+      },
+      include: {
+        business: true,
+        category: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }
+
   async findById(id: string) {
     return prisma.post.findUnique({
       where: {
@@ -128,16 +143,24 @@ class PostRepository {
 
 	async findByBusinessId(businessId: string) {
 		return prisma.post.findMany({
-			where: {
-				businessId,
-			},
-			include: {
-				category: true,
-			},
-			orderBy: {
-				createdAt: "desc",
-			},
-		});
+      where: {
+        businessId,
+      },
+      include: {
+        category: true,
+        business: {
+          select: {
+            id: true,
+            name: true,
+            locality: true,
+            city: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 	}
 
 }

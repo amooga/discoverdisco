@@ -12,11 +12,13 @@ interface CreatePostInput {
 
 interface PostStore {
   posts: PostResponse[];
+  feed: PostResponse[];
   loading: boolean;
   error: string | null;
 
   loadPosts: () => Promise<void>;
-
+  loadFeed: () => Promise<void>;
+  
   addPost: (
     data: CreatePostInput
   ) => Promise<void>;
@@ -30,6 +32,7 @@ interface PostStore {
 
 export const usePostStore = create<PostStore>((set) => ({
   posts: [],
+  feed: [],
   loading: false,
   error: null,
 
@@ -54,6 +57,14 @@ export const usePostStore = create<PostStore>((set) => ({
 
       throw error;
     }
+  },
+
+  loadFeed: async () => {
+    const posts = await postService.getFeed();
+
+    set({
+      feed: posts,
+    });
   },
 
   addPost: async (data) => {

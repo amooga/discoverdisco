@@ -165,6 +165,27 @@ class PostController {
             next(error);
         }
     }
+
+
+    async feed(
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ) {
+      try {
+        const posts = await postService.getFeed();
+
+        return successResponse(
+          res,
+          posts,
+          "Feed fetched successfully."
+        );
+      } catch (error) {
+        next(error);
+      }
+    }
+
+    
 }
 
 export default new PostController();
