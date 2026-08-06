@@ -3,6 +3,9 @@ import cors from "cors";
 
 import routes from "./routes";
 import { errorMiddleware } from "./middleware/error.middleware";
+import authRoutes from "./routes/auth.routes";
+import postRoutes from "./routes/post.routes";
+import categoryRoutes from "./routes/category.routes";
 
 const app = express();
 
@@ -18,7 +21,9 @@ app.get("/health", (_, res) => {
 });
 
 app.use("/api", routes);
-
+app.use("/api/auth", authRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/categories", categoryRoutes);
 app.use(errorMiddleware);
 
 export default app;

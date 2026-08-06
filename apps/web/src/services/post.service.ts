@@ -6,12 +6,6 @@ export async function getPosts() {
   return response.data.data;
 }
 
-export async function createPost(data: any) {
-  const response = await api.post("/posts", data);
-
-  return response.data.data;
-}
-
 export async function getMyPosts() {
   const response = await api.get("/posts/me");
 
@@ -20,6 +14,24 @@ export async function getMyPosts() {
 
 export async function getPost(id: string) {
   const response = await api.get(`/posts/${id}`);
+
+  return response.data.data;
+}
+
+export async function createPost(data: any) {
+  const response = await api.post("/posts", data);
+
+  return response.data.data;
+}
+
+export async function updatePost(id: string, data: any) {
+  const response = await api.patch(`/posts/${id}`, data);
+
+  return response.data.data;
+}
+
+export async function deletePost(id: string) {
+  const response = await api.delete(`/posts/${id}`);
 
   return response.data.data;
 }

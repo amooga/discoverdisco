@@ -11,6 +11,7 @@ export default function PostPreview({
   category,
   description,
 }: Props) {
+  console.log({category})
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
 
