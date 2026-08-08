@@ -7,6 +7,8 @@ import DashboardPage from "../pages/DashboardPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import CategoriesPage from "../pages/CategoriesPage";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 export default function AppRouter() {
   return (
@@ -17,13 +19,18 @@ export default function AppRouter() {
           path="/advertisements/:id"
           element={<AdvertisementDetailsPage />}
         />
-        <Route
-          path="/advertise"
-          element={<CreateAdvertisementPage />}
-        />
+
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/advertise"
+            element={<CreateAdvertisementPage />}
+          />
+          <Route path="/dashboard" element={<DashboardPage />} />
+        </Route>
+
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

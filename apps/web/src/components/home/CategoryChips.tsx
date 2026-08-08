@@ -1,12 +1,4 @@
-const categories = [
-  "All",
-  "Stationery",
-  "Restaurant",
-  "Salon",
-  "Medical",
-  "Grocery",
-  "Electronics",
-];
+import { useCategoryStore } from "../../store/category.store";
 
 interface Props {
   selected: string;
@@ -17,19 +9,25 @@ export default function CategoryChips({
   selected,
   onSelect,
 }: Props) {
+
+  const {
+    categories,
+    loadCategories,
+  } = useCategoryStore();
+  
   return (
     <div className="flex gap-3 overflow-x-auto pb-2">
       {categories.map((category) => (
         <button
-          key={category}
-          onClick={() => onSelect(category)}
+          key={category.id}
+          onClick={() => onSelect(category.id)}
           className={`whitespace-nowrap rounded-full px-5 py-2 font-medium transition ${
-            selected === category
+            selected === category.id
               ? "bg-orange-500 text-white"
               : "bg-white border border-slate-200 hover:bg-slate-100"
           }`}
         >
-          {category}
+          {category.name}
         </button>
       ))}
     </div>

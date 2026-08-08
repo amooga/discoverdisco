@@ -1,83 +1,89 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/auth.store";
 
-export default function Navbar() {
-  const token = localStorage.getItem("token");
+export default function NavBar() {
+  const navigate = useNavigate();
+
+  const isAuthenticated = useAuthStore(
+    (state) => state.isAuthenticated
+  );
+
+  const logout = useAuthStore(
+    (state) => state.logout
+  );
+
+  function handleLogout() {
+    logout();
+    navigate("/");
+  }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+    <nav className="border-b border-slate-200 bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+
+        {/* Logo */}
 
         <Link
           to="/"
-          className="text-2xl font-bold text-orange-600"
+          className="text-2xl font-extrabold text-orange-500"
         >
           DiscoverDisco
         </Link>
 
-        <nav className="hidden gap-8 text-sm font-medium text-slate-600 md:flex">
-
-          <Link
-            to="/"
-            className="hover:text-orange-600"
-          >
-            Home
-          </Link>
-
-          <Link
-            to="/categories"
-            className="hover:text-orange-600"
-          >
-            Categories
-          </Link>
-
-          <Link
-            to="/nearby"
-            className="hover:text-orange-600"
-          >
-            Nearby
-          </Link>
-
-        </nav>
+        {/* Navigation */}
 
         <div className="flex items-center gap-3">
 
-          {token ? (
+          <Link
+            to="/"
+            className="rounded-xl px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+          >
+            Explore
+          </Link>
+
+          {isAuthenticated ? (
             <>
               <Link
-                to="/create-post"
-                className="rounded-xl bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
-              >
-                + Post
-              </Link>
-
-              <Link
                 to="/dashboard"
-                className="rounded-xl border border-slate-300 px-4 py-2 hover:bg-slate-50"
+                className="rounded-xl px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
               >
                 Dashboard
               </Link>
+
+              <Link
+                to="/advertise"
+                className="rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600"
+              >
+                Create Advertisement
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="rounded-xl px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+              >
+                Logout
+              </button>
             </>
           ) : (
             <>
               <Link
                 to="/login"
-                className="rounded-xl border border-slate-300 px-4 py-2 hover:bg-slate-50"
+                className="rounded-xl px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
               >
                 Login
               </Link>
 
               <Link
                 to="/register"
-                className="rounded-xl bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
+                className="rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600"
               >
-                Register
+                Register Your Business
               </Link>
             </>
           )}
 
         </div>
-
       </div>
-    </header>
+    </nav>
   );
 }

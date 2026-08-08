@@ -1,18 +1,13 @@
-import "dotenv/config";
+import { z } from "zod";
 
-function requireEnv(name: string): string {
-  const value = process.env[name];
+const envSchema = z.object({
+    DATABASE_URL: z.string().min(1),
+    JWT_SECRET: z.string().min(32),
+    PORT: z.string().default("5000"),
+    CLIENT_URL: z.string().url(),
+    CLOUDINARY_CLOUD_NAME: z.string(),
+    CLOUDINARY_API_KEY: z.string(),
+    CLOUDINARY_API_SECRET: z.string(),
+});
 
-  if (!value) {
-    throw new Error(`Missing environment variable: ${name}`);
-  }
-
-  return value;
-}
-
-export const env = {
-  PORT: Number(process.env.PORT ?? 5000),
-  DATABASE_URL: requireEnv("DATABASE_URL"),
-  JWT_SECRET: requireEnv("JWT_SECRET"),
-  NODE_ENV: process.env.NODE_ENV ?? "development",
-};
+export const env = envSchema.parse(process.env);

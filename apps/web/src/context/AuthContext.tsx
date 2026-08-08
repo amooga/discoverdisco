@@ -5,6 +5,7 @@ import {
   useState,
   ReactNode,
 } from "react";
+import { useAuthStore } from "../store/auth.store";
 
 interface Business {
   id: string;
@@ -60,7 +61,8 @@ export function AuthProvider({
     token: string,
     business: Business
 	) => {
-    localStorage.setItem("token", token);
+    const login = useAuthStore((state) => state.login);
+    login(token);
 
     localStorage.setItem(
         "business",

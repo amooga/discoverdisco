@@ -1,9 +1,32 @@
+import { create } from "zustand";
 
 interface AuthStore {
   token: string | null;
-  business: BusinessResponse | null;
+  isAuthenticated: boolean;
 
-  register(): Promise<void>;
-  login(): Promise<void>;
-  logout(): void;
+  login: (token: string) => void;
+  logout: () => void;
 }
+
+export const useAuthStore = create<AuthStore>((set) => ({
+  token: localStorage.getItem("token"),
+  isAuthenticated: !!localStorage.getItem("token"),
+
+  login: (token) => {
+    localStorage.setItem("token", token);
+
+    set({
+      token,
+      isAuthenticated: true,
+    });
+  },
+
+  logout: () => {
+    localStorage.removeItem("token");
+
+    set({
+      token: null,
+      isAuthenticated: false,
+    });
+  },
+}));
