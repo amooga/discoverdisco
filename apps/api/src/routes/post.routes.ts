@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import postController from "../controllers/post.controller";
+import postController from "../controllers/post.controller.js";
 
-import { authenticate } from "../middleware/auth.middleware";
+import { authenticate } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
@@ -26,6 +26,11 @@ router.post(
   "/",
   authenticate,
   postController.create
+);
+
+router.get(
+  "/nearby",
+  postController.getNearbyPosts
 );
 
 router.get("/:id", postController.getById);

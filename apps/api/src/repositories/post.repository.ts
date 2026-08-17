@@ -1,6 +1,6 @@
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 
-import { CreatePostInput } from "../validators/post.validator";
+import { CreatePostInput } from "../validators/post.validator.js";
 
 class PostRepository {
   async create(
@@ -162,6 +162,83 @@ class PostRepository {
       },
     });
 	}
+
+  // Haversine formula
+  async findNearby(
+    latitude: number,
+    longitude: number,
+    radiusKm: number = 5
+  ) {
+    const posts = await prisma.post.findMany({
+      where: {
+        status: "ACTIVE",
+        business: {
+          latitude: {
+            not: null,
+          },
+          longitude: {
+            not: null,
+          },
+        },
+      },
+      include: {
+        category: true,
+        business: {
+          select: {
+            id: true,
+            name: true,
+            address: true,
+            locality: true,
+            city: true,
+            latitude: true,
+            longitude: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    const earthRadiusKm = 6371;
+
+    return posts
+      .map((post) => {
+        const businessLat = post.business.latitude!;
+        const businessLng = post.business.longitude!;
+
+        const latDifference =
+          ((businessLat - latitude) * Math.PI) / 180;
+
+        const lngDifference =
+          ((businessLng - longitude) * Math.PI) / 180;
+
+        const a =
+          Math.sin(latDifference / 2) ** 2 +
+          Math.cos((latitude * Math.PI) / 180) *
+            Math.cos((businessLat * Math.PI) / 180) *
+            Math.sin(lngDifference / 2) ** 2;
+
+        const c =
+          2 * Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+          );
+
+        const distance = earthRadiusKm * c;
+
+        return {
+          ...post,
+          distanceKm: Number(distance.toFixed(2)),
+        };
+      })
+      .filter(
+        (post) => post.distanceKm <= radiusKm
+      )
+      .sort(
+        (a, b) => a.distanceKm - b.distanceKm
+      );
+  }
 
 }
 
