@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import FeedGrid from "../components/feed/FeedGrid";
+import LocationPrompt from "../components/location/LocationPrompt";
 
 import { usePostStore } from "../store/postStore";
 
@@ -12,6 +13,15 @@ export default function HomePage() {
     loadFeed,
     loading,
   } = usePostStore();
+
+  const loadNearbyPosts = usePostStore(
+    (state) => state.loadNearbyPosts
+  );
+
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
   useEffect(() => {
     loadFeed().catch(console.error);
@@ -82,6 +92,27 @@ export default function HomePage() {
         </div>
 
       </section>
+
+
+      {/* User Location  */}
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+        <LocationPrompt
+          onLocation={async (latitude, longitude) => {
+            try {
+              await loadNearbyPosts(
+                latitude,
+                longitude,
+                5
+              );
+            } catch (error) {
+              console.error(
+                "Failed to load nearby advertisements:",
+                error
+              );
+            }
+          }}
+        />
+      </div>
 
       {/* Feed */}
 

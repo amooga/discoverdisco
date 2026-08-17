@@ -28,6 +28,12 @@ interface PostStore {
   ) => Promise<void>;
 
   loadPublicPosts: () => Promise<void>;
+
+  loadNearbyPosts: (
+    latitude: number,
+    longitude: number,
+    radiusKm?: number
+  ) => Promise<void>;
 }
 
 export const usePostStore = create<PostStore>((set) => ({
@@ -106,5 +112,30 @@ export const usePostStore = create<PostStore>((set) => ({
 
       throw error;
     }
+  },
+
+  loadNearbyPosts: async (
+    latitude,
+    longitude,
+    radiusKm = 5
+  ) => {
+    set({ loading: true });
+
+    try {
+      const posts = await postService.getNearby(
+        latitude,
+        longitude,
+        radiusKm
+      );
+
+      set({
+        posts,
+        loading: false,
+      });
+    } catch (error) {
+      set({ loading: false });
+      throw error;
+    }
   }
+
 }));
