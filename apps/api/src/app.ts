@@ -3,17 +3,17 @@ import cors from "cors";
 import {
   apiLimiter,
   authLimiter,
-} from "./middleware/rateLimit.middleware";
+} from "./middleware/rateLimit.middleware.js";
 
-import routes from "./routes";
-import { errorMiddleware } from "./middleware/error.middleware";
-import authRoutes from "./routes/auth.routes";
-import postRoutes from "./routes/post.routes";
-import categoryRoutes from "./routes/category.routes";
+import routes from "./routes/index.js";
+import { errorMiddleware } from "./middleware/error.middleware.js";
+import authRoutes from "./routes/auth.routes.js";
+import postRoutes from "./routes/post.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
 import helmet from "helmet";
 import compression from "compression";
 import morgan from "morgan";
-import uploadRoutes from "./routes/upload.routes";
+import uploadRoutes from "./routes/upload.routes.js";
 
 const app = express();
 

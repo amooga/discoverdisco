@@ -1,6 +1,6 @@
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 
-import { RegisterInput } from "../validators/auth.validator";
+import { RegisterInput } from "../validators/auth.validator.js";
 
 const businessSelect = {
   id: true,
@@ -13,6 +13,10 @@ const businessSelect = {
   city: true,
   state: true,
   pincode: true,
+
+  latitude: true,
+  longitude: true,
+
   verified: true,
   logoUrl: true,
   coverImage: true,
@@ -56,7 +60,8 @@ export class BusinessRepository {
     return prisma.business.findUnique({
         where: {
             id
-        }
+        },
+        select: businessSelect,
     });
   }
 
@@ -81,9 +86,9 @@ export class BusinessRepository {
 
 		return {
 			totalPosts: posts.length,
-			totalViews: posts.reduce((sum, p) => sum + p.views, 0),
-			totalClicks: posts.reduce((sum, p) => sum + p.clicks, 0),
-			totalShares: posts.reduce((sum, p) => sum + p.shares, 0),
+			totalViews: posts.reduce((sum: number, p: any) => sum + p.views, 0),
+			totalClicks: posts.reduce((sum: number, p: any) => sum + p.clicks, 0),
+			totalShares: posts.reduce((sum: number, p: any) => sum + p.shares, 0),
 		};
 	}
 

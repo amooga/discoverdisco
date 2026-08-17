@@ -1,4 +1,4 @@
-import categoryRepository from "../repositories/category.repository";
+import categoryRepository from "../repositories/category.repository.js";
 
 class CategoryService {
   async getAll() {

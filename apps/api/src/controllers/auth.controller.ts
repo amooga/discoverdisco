@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 
-import authService from "../services/auth.service";
-import { successResponse } from "../utils/response";
+import authService from "../services/auth.service.js";
+import { successResponse } from "../utils/response.js";
 import {
   registerSchema,
   loginSchema,
-} from "../validators/auth.validator";
+} from "../validators/auth.validator.js";
 
 class AuthController {
   async register(

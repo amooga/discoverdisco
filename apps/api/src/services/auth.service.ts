@@ -1,18 +1,18 @@
-import businessRepository from "../repositories/business.repository";
+import businessRepository from "../repositories/business.repository.js";
 
 import {
   RegisterInput,
   LoginInput,
-} from "../validators/auth.validator";
+} from "../validators/auth.validator.js";
 
 import {
   hashPassword,
   comparePassword,
-} from "../utils/password";
+} from "../utils/password.js";
 
-import { generateToken } from "../utils/jwt";
+import { generateToken } from "../utils/jwt.js";
 
-import AppError from "../utils/AppError";
+import AppError from "../utils/AppError.js";
 
 class AuthService {
   async register(data: RegisterInput) {
