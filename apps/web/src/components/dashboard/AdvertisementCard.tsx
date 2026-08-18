@@ -42,6 +42,11 @@ export default function AdvertisementCard({
             {post.description}
           </p>
 
+          {post.distanceKm !== undefined && (
+            <span className="text-sm text-slate-500">
+              📍 {post.distanceKm} km away
+            </span>
+          )}
         </div>
 
       </div>

@@ -4,8 +4,11 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import FeedGrid from "../components/feed/FeedGrid";
 import LocationPrompt from "../components/location/LocationPrompt";
+import NearbyOffersSection from "../components/home/NearbyOffersSection";
+import LocationSelector from "../components/location/LocationSelector";
 
 import { usePostStore } from "../store/postStore";
+import { getSavedLocation, saveLocation } from "../services/location.storage";
 
 export default function HomePage() {
   const {
@@ -26,6 +29,24 @@ export default function HomePage() {
   useEffect(() => {
     loadFeed().catch(console.error);
   }, [loadFeed]);
+
+  useEffect(() => {
+    const savedLocation = getSavedLocation();
+
+    if (!savedLocation) {
+      return;
+    }
+
+    setUserLocation(savedLocation);
+
+    void loadNearbyPosts(
+      savedLocation.latitude,
+      savedLocation.longitude,
+      5
+    );
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className="min-h-screen bg-slate-50">
@@ -96,23 +117,30 @@ export default function HomePage() {
 
       {/* User Location  */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <LocationPrompt
-          onLocation={async (latitude, longitude) => {
-            try {
-              await loadNearbyPosts(
-                latitude,
-                longitude,
-                5
-              );
-            } catch (error) {
-              console.error(
-                "Failed to load nearby advertisements:",
-                error
-              );
-            }
+       <LocationSelector
+          location={userLocation}
+          onLocationChange={async (
+            latitude,
+            longitude
+          ) => {
+            const location = {
+              latitude,
+              longitude,
+            };
+
+            setUserLocation(location);
+            saveLocation(location);
+
+            await loadNearbyPosts(
+              latitude,
+              longitude,
+              5
+            );
           }}
         />
       </div>
+
+      <NearbyOffersSection />
 
       {/* Feed */}
 
