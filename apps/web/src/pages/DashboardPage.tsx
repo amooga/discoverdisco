@@ -8,14 +8,17 @@ import StatsSection from "../components/dashboard/StatsSection";
 import MyAdvertisements from "../components/dashboard/MyAdvertisements";
 
 import { usePostStore } from "../store/postStore";
+import BusinessLocation from "../components/dashboard/BusinessLocation";
+import { useBusinessStore } from "../store/businessStore";
 
 export default function DashboardPage() {
   const {
     posts,
     loadPosts,
-    loading,
+    loading
   } = usePostStore();
 
+  const business = useBusinessStore((state) => state.business);
   useEffect(() => {
     loadPosts().catch(console.error);
   }, [loadPosts]);
@@ -54,6 +57,17 @@ export default function DashboardPage() {
           expired={expired}
         />
 
+        <BusinessLocation
+          latitude={business?.latitude}
+          longitude={business?.longitude}
+          onSaved={(latitude, longitude) => {
+            console.log(
+              "Business location saved:",
+              latitude,
+              longitude
+            );
+          }}
+        />
         {loading ? (
           <div className="rounded-3xl bg-white p-12 text-center shadow-sm">
             Loading advertisements...

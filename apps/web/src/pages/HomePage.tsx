@@ -24,6 +24,7 @@ export default function HomePage() {
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
+    displayName?: string;
   } | null>(null);
 
   useEffect(() => {
@@ -121,20 +122,28 @@ export default function HomePage() {
           location={userLocation}
           onLocationChange={async (
             latitude,
-            longitude
+            longitude,
+            displayName
           ) => {
-            const location = {
+            const newLocation = {
               latitude,
               longitude,
+              displayName
             };
 
-            setUserLocation(location);
-            saveLocation(location);
+            setUserLocation(newLocation);
+
+            saveLocation(newLocation);
 
             await loadNearbyPosts(
               latitude,
               longitude,
               5
+            );
+
+            console.log(
+              "Selected location:",
+              displayName
             );
           }}
         />

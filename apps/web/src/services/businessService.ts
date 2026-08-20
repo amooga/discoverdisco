@@ -1,16 +1,27 @@
-import { mockBusinesses } from "../data/businesses";
+import api from "./api";
 
 class BusinessService {
-  private businesses = [...mockBusinesses];
+  async updateLocation(
+    latitude: number,
+    longitude: number
+  ) {
+    const response = await api.patch(
+      "/businesses/location",
+      {
+        latitude,
+        longitude,
+      }
+    );
 
-  getAll() {
-    return this.businesses;
+    return response.data.data;
   }
 
-  getById(id: string) {
-    return this.businesses.find(
-      business => business.id === id
+  async getMe() {
+    const response = await api.get(
+      "/businesses/me"
     );
+
+    return response.data.data;
   }
 }
 

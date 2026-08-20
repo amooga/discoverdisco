@@ -1,4 +1,12 @@
+import api from "./api";
+
 export interface UserLocation {
+  latitude: number;
+  longitude: number;
+}
+
+export interface LocationSearchResult {
+  displayName: string;
   latitude: number;
   longitude: number;
 }
@@ -32,4 +40,19 @@ export function getUserLocation(): Promise<UserLocation> {
       }
     );
   });
+}
+
+export async function searchLocations(
+  query: string
+): Promise<LocationSearchResult[]> {
+  const response = await api.get(
+    "/location/search",
+    {
+      params: {
+        q: query,
+      },
+    }
+  );
+
+  return response.data.data;
 }

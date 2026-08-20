@@ -92,6 +92,22 @@ export class BusinessRepository {
 		};
 	}
 
+  async updateLocation(
+    businessId: string,
+    latitude: number,
+    longitude: number
+  ) {
+    return prisma.business.update({
+      where: {
+        id: businessId,
+      },
+      data: {
+        latitude,
+        longitude,
+      },
+      select: businessSelect,
+    });
+  }
 }
 
 export default new BusinessRepository();
