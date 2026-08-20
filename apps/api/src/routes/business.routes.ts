@@ -5,6 +5,14 @@ import { authenticate } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
+router.get(
+  "/me",
+  authenticate,
+  businessController.getMe.bind(
+    businessController
+  )
+);
+
 router.patch(
   "/location",
   authenticate,
