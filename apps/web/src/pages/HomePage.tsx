@@ -1,10 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import FeedGrid from "../components/feed/FeedGrid";
+import LocationPrompt from "../components/location/LocationPrompt";
+import NearbyOffersSection from "../components/home/NearbyOffersSection";
+import LocationSelector from "../components/location/LocationSelector";
 
 import { usePostStore } from "../store/postStore";
+import { getSavedLocation, saveLocation } from "../services/location.storage";
 
 export default function HomePage() {
   const {
@@ -13,9 +17,37 @@ export default function HomePage() {
     loading,
   } = usePostStore();
 
+  const loadNearbyPosts = usePostStore(
+    (state) => state.loadNearbyPosts
+  );
+
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+    displayName?: string;
+  } | null>(null);
+
   useEffect(() => {
     loadFeed().catch(console.error);
   }, [loadFeed]);
+
+  useEffect(() => {
+    const savedLocation = getSavedLocation();
+
+    if (!savedLocation) {
+      return;
+    }
+
+    setUserLocation(savedLocation);
+
+    void loadNearbyPosts(
+      savedLocation.latitude,
+      savedLocation.longitude,
+      5
+    );
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className="min-h-screen bg-slate-50">
@@ -82,6 +114,42 @@ export default function HomePage() {
         </div>
 
       </section>
+
+
+      {/* User Location  */}
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+       <LocationSelector
+          location={userLocation}
+          onLocationChange={async (
+            latitude,
+            longitude,
+            displayName
+          ) => {
+            const newLocation = {
+              latitude,
+              longitude,
+              displayName
+            };
+
+            setUserLocation(newLocation);
+
+            saveLocation(newLocation);
+
+            await loadNearbyPosts(
+              latitude,
+              longitude,
+              5
+            );
+
+            console.log(
+              "Selected location:",
+              displayName
+            );
+          }}
+        />
+      </div>
+
+      <NearbyOffersSection />
 
       {/* Feed */}
 

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import categoryService from "../services/category.service";
-import { successResponse } from "../utils/response";
+import categoryService from "../services/category.service.js";
+import { successResponse } from "../utils/response.js";
 
 class CategoryController {
   async getAll(

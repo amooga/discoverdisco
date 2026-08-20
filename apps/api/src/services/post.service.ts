@@ -1,7 +1,7 @@
-import postRepository from "../repositories/post.repository";
-import AppError from "../utils/AppError";
+import postRepository from "../repositories/post.repository.js";
+import AppError from "../utils/AppError.js";
 
-import { CreatePostInput } from "../validators/post.validator";
+import { CreatePostInput } from "../validators/post.validator.js";
 
 class PostService {
   async create(
@@ -72,6 +72,18 @@ class PostService {
 
   async getFeed() {
     return postRepository.findAllActive();
+  }
+
+  async getNearbyPosts(
+    latitude: number,
+    longitude: number,
+    radiusKm: number = 5
+  ) {
+    return postRepository.findNearby(
+      latitude,
+      longitude,
+      radiusKm
+    );
   }
 
 }

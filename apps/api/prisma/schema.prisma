@@ -24,6 +24,9 @@ model Business {
   state         String
   pincode       String
 
+  latitude      Float?
+  longitude     Float?
+
   verified      Boolean  @default(false)
 
   logoUrl       String?

@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 
-import postService from "../services/post.service";
+import postService from "../services/post.service.js";
 
-import { createPostSchema } from "../validators/post.validator";
+import { createPostSchema } from "../validators/post.validator.js";
 
-import { successResponse } from "../utils/response";
+import { successResponse } from "../utils/response.js";
 
-import AppError from "../utils/AppError";
+import AppError from "../utils/AppError.js";
 
-import { AuthRequest } from "../middleware/auth.middleware";
+import { AuthRequest } from "../middleware/auth.middleware.js";
 
 class PostController {
   async create(
@@ -184,6 +184,58 @@ class PostController {
         next(error);
       }
     }
+  
+  async getNearbyPosts(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const latitude = Number(req.query.lat);
+      const longitude = Number(req.query.lng);
+
+      const radius = req.query.radius
+        ? Number(req.query.radius)
+        : 5;
+
+      if (
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude)
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Valid latitude and longitude are required.",
+        });
+      }
+
+      if (
+        !Number.isFinite(radius) ||
+        radius <= 0 ||
+        radius > 50
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Radius must be between 0 and 50 km.",
+        });
+      }
+
+      const posts =
+        await postService.getNearbyPosts(
+          latitude,
+          longitude,
+          radius
+        );
+
+      return res.json({
+        success: true,
+        data: posts,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 
     
 }

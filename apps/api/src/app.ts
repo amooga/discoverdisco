@@ -3,17 +3,20 @@ import cors from "cors";
 import {
   apiLimiter,
   authLimiter,
-} from "./middleware/rateLimit.middleware";
+} from "./middleware/rateLimit.middleware.js";
 
-import routes from "./routes";
-import { errorMiddleware } from "./middleware/error.middleware";
-import authRoutes from "./routes/auth.routes";
-import postRoutes from "./routes/post.routes";
-import categoryRoutes from "./routes/category.routes";
+import routes from "./routes/index.js";
+import { errorMiddleware } from "./middleware/error.middleware.js";
+import authRoutes from "./routes/auth.routes.js";
+import postRoutes from "./routes/post.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
+import locationRoutes from "./routes/location.routes.js";
+
 import helmet from "helmet";
 import compression from "compression";
 import morgan from "morgan";
-import uploadRoutes from "./routes/upload.routes";
+import uploadRoutes from "./routes/upload.routes.js";
+import businessRoutes from "./routes/business.routes.js";
 
 const app = express();
 
@@ -48,6 +51,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/uploads", uploadRoutes);
+app.use("/api/location", locationRoutes);
+app.use("/api/businesses", businessRoutes);
+
 app.use(errorMiddleware);
 
 export default app;

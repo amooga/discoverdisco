@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 
-import { verifyToken } from "../utils/jwt";
+import { verifyToken } from "../utils/jwt.js";
 
-import AppError from "../utils/AppError";
+import AppError from "../utils/AppError.js";
 
 export interface AuthRequest extends Request {
   businessId?: string;

@@ -12,11 +12,17 @@ interface CreatePostInput {
 
 interface PostStore {
   posts: PostResponse[];
+  nearbyPosts: PostResponse[];
   feed: PostResponse[];
+  
   loading: boolean;
+  nearbyLoading: boolean;
+  
   error: string | null;
+  nearbyError: string | null;
 
   loadPosts: () => Promise<void>;
+
   loadFeed: () => Promise<void>;
   
   addPost: (
@@ -28,13 +34,26 @@ interface PostStore {
   ) => Promise<void>;
 
   loadPublicPosts: () => Promise<void>;
+
+  loadNearbyPosts: (
+    latitude: number,
+    longitude: number,
+    radiusKm?: number
+  ) => Promise<void>;
+
+  clearNearbyPosts: () => void;
 }
 
 export const usePostStore = create<PostStore>((set) => ({
   posts: [],
+  nearbyPosts: [],
   feed: [],
   loading: false,
+  nearbyLoading: false,
+
   error: null,
+  nearbyError: null,
+
 
   loadPosts: async () => {
     set({ loading: true });
@@ -68,11 +87,20 @@ export const usePostStore = create<PostStore>((set) => ({
   },
 
   addPost: async (data) => {
-    const post = await postService.create(data);
+    try {
+      const post = await postService.create(data);
 
-    set((state) => ({
-      posts: [post, ...state.posts],
-    }));
+      set((state) => ({
+        posts: [post, ...state.posts],
+      }));
+    } catch (error) {
+      console.error(
+        "Failed to create advertisement:",
+        error
+      );
+
+      throw error;
+    }
   },
 
   deletePost: async (id) => {
@@ -106,5 +134,49 @@ export const usePostStore = create<PostStore>((set) => ({
 
       throw error;
     }
+  },
+
+  loadNearbyPosts: async (
+    latitude,
+    longitude,
+    radiusKm = 5
+  ) => {
+    set({
+      nearbyLoading: true,
+      nearbyError: null,
+    });
+
+    try {
+      const posts = await postService.getNearby(
+        latitude,
+        longitude,
+        radiusKm
+      );
+
+      set({
+        nearbyPosts: posts,
+        nearbyLoading: false,
+      });
+    } catch (error) {
+      console.error(
+        "Failed to load nearby posts:",
+        error
+      );
+
+      set({
+        nearbyLoading: false,
+        nearbyError:
+          "Failed to load nearby advertisements.",
+      });
+    }
+  },
+
+  
+  clearNearbyPosts: () => {
+    set({ 
+      nearbyPosts: [],
+      nearbyError: null,
+    });
   }
+
 }));

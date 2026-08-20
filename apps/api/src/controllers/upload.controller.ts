@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import cloudinary from "../config/cloudinary";
+import cloudinary from "../config/cloudinary.js";
 import streamifier from "streamifier";
 
 class UploadController {
@@ -29,7 +29,7 @@ class UploadController {
               }
             );
 
-          streamifier.createReadStream(req.file.buffer).pipe(stream);
+          if(req.file) streamifier.createReadStream(req.file.buffer).pipe(stream);
         }
       );
 

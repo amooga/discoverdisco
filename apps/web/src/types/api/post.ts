@@ -37,6 +37,9 @@ export interface PostResponse {
     locality: string;
     city: string;
   };
+
+  distanceKm?: number;
+
 }
 
 export interface CreatePostInput {

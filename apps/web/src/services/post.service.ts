@@ -39,6 +39,25 @@ class PostService {
 
     return response.data.data as PostResponse[];
   }
+
+  async getNearby(
+    latitude: number,
+    longitude: number,
+    radiusKm = 5
+  ) {
+    const response = await api.get(
+      "/posts/nearby",
+      {
+        params: {
+          lat: latitude,
+          lng: longitude,
+          radius: radiusKm,
+        },
+      }
+    );
+
+    return response.data.data as PostResponse[];
+  }
 }
 
 export default new PostService();

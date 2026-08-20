@@ -16,6 +16,9 @@ export interface Business {
     openingTime?: string;
     closingTime?: string;
     createdAt: string;
+    latitude?: number;
+    longitude?: number;
+    updatedAt: string;
 }
 
 export interface BusinessResponse {
