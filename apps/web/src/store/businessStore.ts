@@ -8,55 +8,89 @@ interface BusinessStore {
   error: string | null;
 
   fetchBusiness: () => Promise<void>;
+
   updateLocation: (
     latitude: number,
     longitude: number
   ) => Promise<void>;
 }
 
-export const useBusinessStore = create<BusinessStore>((set) => ({
-  business: null,
-  loading: false,
-  error: null,
-  fetchBusiness: async () => {
-    set({
-      loading: true,
-      error: null,
-    });
+export const useBusinessStore =
+  create<BusinessStore>((set) => ({
+    business: null,
+    loading: false,
+    error: null,
 
-    try {
-      const business =
-        await businessService.getMe();
-
+    // --------------------------------
+    // Get actual logged-in business
+    // --------------------------------
+    fetchBusiness: async () => {
       set({
-        business,
-        loading: false,
+        loading: true,
+        error: null,
       });
-    } catch (error) {
-      console.error(
-        "Failed to load business:",
-        error
-      );
 
+      try {
+        const business =
+          await businessService.getMe();
+
+        set({
+          business,
+          loading: false,
+          error: null,
+        });
+      } catch (error) {
+        console.error(
+          "Failed to load business:",
+          error
+        );
+
+        set({
+          business: null,
+          loading: false,
+          error:
+            "Failed to load business.",
+        });
+      }
+    },
+
+    // --------------------------------
+    // Update shop location
+    // --------------------------------
+    updateLocation: async (
+      latitude,
+      longitude
+    ) => {
       set({
-        business: null,
-        loading: false,
-        error: "Failed to load business.",
+        loading: true,
+        error: null,
       });
-    }
-  },
-  updateLocation: async (
-    latitude,
-    longitude
-  ) => {
-    const business =
-      await businessService.updateLocation(
-        latitude,
-        longitude
-      );
 
-    set({
-      business,
-    });
-  },
-}));
+      try {
+        const business =
+          await businessService.updateLocation(
+            latitude,
+            longitude
+          );
+
+        set({
+          business,
+          loading: false,
+          error: null,
+        });
+      } catch (error) {
+        console.error(
+          "Failed to update business location:",
+          error
+        );
+
+        set({
+          loading: false,
+          error:
+            "Failed to update business location.",
+        });
+
+        throw error;
+      }
+    },
+  }));
